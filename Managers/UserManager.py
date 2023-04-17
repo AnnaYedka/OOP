@@ -39,3 +39,13 @@ class UserManager:
 
     def get_users_by_id(self, *user_ids: int) -> list[User]:
         return [user for user in self.users if user.id in user_ids]
+
+    def add_board_to_users(self, board_id: int, *user_ids: int):
+        for user in self.users:
+            if user.id in user_ids:
+                user.board_ids.append(board_id)
+
+    def remove_board_from_users(self, board_id: int, *user_ids: int):
+        for user in self.users:
+            if user.id in user_ids:
+                user.board_ids.remove(board_id)
