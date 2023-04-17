@@ -2,9 +2,18 @@ from Entities.User import User
 
 
 class UserManager:
+    __instance = None
+
+    @classmethod
+    def get_instance(cls):
+        if cls.__instance is None:
+            cls.__instance = UserManager()
+        return cls.__instance
+
     def __init__(self):
-        self.users: list[User] = []
-        self.current_user_id: int = None
+        if UserManager.__instance is None:
+            self.users: list[User] = []
+            self.current_user_id: int = None
 
     def add_user(self, user: User):
         self.users.append(user)
@@ -28,5 +37,5 @@ class UserManager:
     def log_out(self):
         self.current_user_id = None
 
-    def get_users_by_id(self, *user_ids: list[int]) -> list[User]:
+    def get_users_by_id(self, *user_ids: int) -> list[User]:
         return [user for user in self.users if user.id in user_ids]
