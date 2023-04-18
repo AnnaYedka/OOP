@@ -1,5 +1,5 @@
 from Entities.User import User
-
+from BoardManager import BoardManager
 
 class UserManager:
     __instance = None
@@ -22,8 +22,10 @@ class UserManager:
         found_user = False
         for user in self.users:
             if user.id == user_id:
+                for board_id in user.board_ids:
+                    self.users.remove(user)
+                    BoardManager.get_instance().remove_users_from_board(board_id, user_id)
                 found_user = True
-                self.users.remove(user)
         if not found_user:
             raise LookupError("user not found")
 
