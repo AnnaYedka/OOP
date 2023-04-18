@@ -1,6 +1,7 @@
 from Entities.Board import Board
 from UserManager import UserManager
 
+
 class BoardManager:
     __instance = None
 
@@ -25,9 +26,9 @@ class BoardManager:
 
     def update_board(self, changed_board: Board):
         found = False
-        for board in self.boards:
-            if board.id == changed_board.id:
-                board = changed_board
+        for i in range(len(self.boards)):
+            if self.boards[i].id == changed_board.id:
+                self.boards[i] = changed_board
                 found = True
         if not found:
             raise LookupError("board not found")
@@ -53,6 +54,5 @@ class BoardManager:
         board = self.get_board(board_id)
         for user_id in user_ids:
             board.user_ids.remove(user_id)
-
         UserManager.get_instance().remove_board_from_users(board_id, user_ids)
 
