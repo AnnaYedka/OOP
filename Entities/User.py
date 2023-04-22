@@ -3,4 +3,4 @@ class User:
         self.name = name
         self.password = password
         self.board_ids = []
-        self.id: int
+        self.id: int = name.__hash__()

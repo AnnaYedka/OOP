@@ -1,5 +1,4 @@
 from Entities.Board import Board
-from UserManager import UserManager
 
 
 class BoardManager:

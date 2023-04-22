@@ -10,10 +10,11 @@ class BoardService:
         self.user_manager = user_manager
         self.current_board: Board = None
 
-    def create_board(self, board_name: str):
+    def create_board(self, board_name: str, user):
         board = Board(board_name)
         self.board_manager.add_board(board)
         self.current_board = board
+        self.add_users_to_board(user.id)
 
     def select_board(self, board: Board):
         self.current_board = board
@@ -21,9 +22,8 @@ class BoardService:
     def remove_users_from_board(self, *user_ids: int):
         users = self.user_manager.get_users(*user_ids)
         for user in users:
-            user.board_ids.remove(self.current_board)
+            user.board_ids.remove(self.current_board.id)
         self.user_manager.update_users(*users)
-        self.current_board.user_ids.remove(*user_ids)
 
     def add_users_to_board(self, *user_ids: int):
         self.current_board.user_ids.append(*user_ids)
@@ -43,7 +43,7 @@ class BoardService:
         self.current_board.task_statuses.append(status_name)
         self.board_manager.update_boards(self.current_board)
 
-    def add_task(self, status: str, task_name: str, task_comments: str, due_date):
+    def add_task(self, status: str, task_name: str, task_comments: str, due_date = None):
         task = Task(task_name, task_comments, status, due_date)
         self.current_board.tasks.append(task)
         self.board_manager.update_boards(self.current_board)
@@ -77,4 +77,12 @@ class BoardService:
         self.current_board.tasks.remove(selected_task)
         self.board_manager.update_boards(self.current_board)
 
+    def show_tasks(self):
+        for task in self.current_board.tasks:
+            print("------------")
+            print(task.name)
+            print(task.comments)
+            print(task.status)
+            print(task.checklist)
+            print(task.progress, "/", len(task.checklist))
 

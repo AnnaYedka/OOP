@@ -1,3 +1,7 @@
 .DS_Store
 venv/
 .idea
+DBManagers/__pycache__/
+Entities/__pycache__/
+Services/__pycache__/
+tmp.py

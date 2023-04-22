@@ -11,8 +11,9 @@ class UserService:
         self.board_manager = board_manager
 
     def register(self, username: str, password: str):
-        # add data validation
-        self.current_user = User(username, password)
+        user = User(username, password)
+        self.user_manager.add_user(user)
+        self.current_user = user
 
     def log_in(self, username: str, password: str) -> bool:
         user = self.user_manager.get_user_by_name(username)
@@ -36,10 +37,9 @@ class UserService:
         self.current_user = None
 
     def get_all_user_boards(self) -> list[Board]:
-        return self.board_manager.get_boards(self.current_user.board_ids)
+        tmp = self.board_manager.get_boards(*self.current_user.board_ids)
+        return tmp
 
     def add_board(self, board: Board):
         self.current_user.board_ids.append(board)
         self.user_manager.update_users(self.current_user)
-
-
